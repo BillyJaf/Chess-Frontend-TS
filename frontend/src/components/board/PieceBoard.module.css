@@ -1,0 +1,17 @@
+.pieceBoard {
+  display: grid;
+  grid-template-columns: repeat(8, 60px);
+  grid-template-rows: repeat(8, 60px);
+  width: 480px;
+  height: 480px;
+  position: absolute;
+}
+
+.piece {
+  width: 60px;
+  height: 60px;
+}
+
+.piece:hover {
+  background-color: #ff2c2c;
+}

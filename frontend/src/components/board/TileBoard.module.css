@@ -1,0 +1,32 @@
+.tileBoard {
+  display: grid;
+  grid-template-columns: repeat(8, 60px);
+  grid-template-rows: repeat(8, 60px);
+  width: 480px;
+  height: 480px;
+  position: absolute;
+}
+
+.light {
+  width: 60px;
+  height: 60px;
+  background-color: #f0d9b5;
+}
+
+.lightHighlight {
+  width: 60px;
+  height: 60px;
+  background-color: #ced094;
+}
+
+.dark {
+  width: 60px;
+  height: 60px;
+  background-color: #b58863;
+}
+
+.darkHighlight {
+  width: 60px;
+  height: 60px;
+  background-color: #bcbf6e;
+}

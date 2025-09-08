@@ -41,8 +41,6 @@ export async function fetchLegalMoves(fen: string) {
         moves: internalLegalMoves
     }
 
-    console.log(parsedLegalMovesInternal)
-
     return parsedLegalMovesInternal
 }
 

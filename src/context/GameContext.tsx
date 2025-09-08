@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { FenPosition, type PieceInHand } from "../utils/types";
 import { fenGameToVisualGame } from "../utils/helpers";
-import { fetchLegalMoves } from "../utils/fetchers";
+import { fetchLegalMoves } from "../utils/legalMoveFetcher";
 
 interface VisualPosition {
     // Real current game

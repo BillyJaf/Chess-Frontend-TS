@@ -2,8 +2,10 @@ import React, { type JSX } from "react";
 import styles from "./PieceBoard.module.css"
 import { useGame } from "../../context/GameContext";
 import type { PieceInHand } from "../../utils/types";
-import { fetchLegalMoves } from "../../utils/fetchers";
+import { fetchLegalMoves } from "../../utils/legalMoveFetcher";
 import { fenGameToVisualGame } from "../../utils/helpers";
+import { makeBotMove } from "../../utils/makeBotMove";
+import { fetchBestMove } from "../../utils/bestMoveFetcher";
 
 const PieceBoard: React.FC = () => {
     const squares: JSX.Element[] = [];
@@ -59,9 +61,7 @@ const PieceBoard: React.FC = () => {
                         const resultingFen = tuple[1];
                         setPieceInHand(null)
                         setVisualGame(fenGameToVisualGame(resultingFen.split(" ")[0]))
-                        fetchLegalMoves(resultingFen).then((data) => {
-                            setLegalMoves(data!.moves)
-                        })
+                        makeBotMove(resultingFen, setVisualGame, setLegalMoves)
                         return;
                     }
                 }

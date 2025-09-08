@@ -2,13 +2,17 @@ import React, { type JSX } from "react";
 import styles from "./PieceBoard.module.css"
 import { useGame } from "../../context/GameContext";
 import type { PieceInHand } from "../../utils/types";
+import { fetchLegalMoves } from "../../utils/fetchers";
+import { fenGameToVisualGame } from "../../utils/helpers";
 
 const PieceBoard: React.FC = () => {
     const squares: JSX.Element[] = [];
     const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
-    const { legalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand } = useGame();
+    const { legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand } = useGame();
 
     const handleClick = (e: React.MouseEvent, squareIndex: number, square: string) => {
+        // Picking up a piece:
+
 
         // We can only make legal moves.
         // If we are picking up a piece:
@@ -16,8 +20,16 @@ const PieceBoard: React.FC = () => {
             return;
         }
         // If we are placing a piece:
-        if (!!pieceInHand && !(legalMoves[pieceInHand.pieceOrigin].includes(square)) && square !== pieceInHand.pieceOrigin) {
-            return;
+        if (!!pieceInHand && square !== pieceInHand.pieceOrigin) {
+            let validSquare = false;
+            for (const tuple of legalMoves[pieceInHand.pieceOrigin]) {
+                if (tuple[0] === square) {
+                    validSquare = true;
+                }
+            }
+            if (!validSquare) {
+                return;
+            }
         }
 
         const piece = visualGame.charAt(squareIndex);
@@ -38,9 +50,25 @@ const PieceBoard: React.FC = () => {
                 x: e.clientX,
                 y: e.clientY,
             };
+        } 
+        // Otherwise we are placing a piece:
+        else {
+            if (square !== pieceInHand!.pieceOrigin) {
+                for (const tuple of legalMoves[pieceInHand!.pieceOrigin]) {
+                    if (tuple[0] === square) {
+                        const resultingFen = tuple[1];
+                        setPieceInHand(null)
+                        setVisualGame(fenGameToVisualGame(resultingFen.split(" ")[0]))
+                        fetchLegalMoves(resultingFen).then((data) => {
+                            setLegalMoves(data!.moves)
+                        })
+                        return;
+                    }
+                }
+            } 
         }
-        
-        setPieceInHand(update);
+
+        setPieceInHand(update)
         setVisualGame(visualGame.slice(0, squareIndex) + currentlyHeldPiece + visualGame.slice(squareIndex + 1))
     };
 

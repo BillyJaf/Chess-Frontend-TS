@@ -1,13 +1,15 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { FenPosition, type PieceInHand } from "../utils/types";
 import { fenGameToVisualGame } from "../utils/helpers";
+import { fetchLegalMoves } from "../utils/fetchers";
 
 interface VisualPosition {
     // Real current game
     currentGame: FenPosition;
-    legalMoves: {[key: string]: string[]}
+    legalMoves: {[key: string]: [string, string][]}
+    setLegalMoves: (legalMoves: {[key: string]: [string, string][]}) => void;
     // Visual representation of the game:
-    // 64 character long string holding all pieces. Blank tiles are represented with 'x'
+    // 64 character string holding all pieces. Blank tiles are represented with 'x'
     // If there is a piece in hand, then the corresponding square will be temporaily blank
     visualGame: string;
     setVisualGame: (fenGame: string) => void;
@@ -16,16 +18,24 @@ interface VisualPosition {
 }
 
 const GameContext = createContext<VisualPosition | undefined>(undefined);
+const startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     // Construct the game:
-    const currentGame = new FenPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-    const legalMoves = {"a1":["a5","a6","a7"]};
+    const currentGame = new FenPosition(startingPosition);
+
     const [visualGame, setVisualGame] = useState<string>(fenGameToVisualGame(currentGame.fenGame));
     const [pieceInHand, setPieceInHand] = useState<PieceInHand | null>(null);
+    const [legalMoves, setLegalMoves] = useState<{[key: string]: [string, string][]}>({});
+
+    useEffect(() => {
+        fetchLegalMoves(startingPosition).then((data) => {
+            setLegalMoves(data!.moves)
+        })
+    }, []);
 
     return (
-        <GameContext.Provider value={{ currentGame, legalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand}}>
+        <GameContext.Provider value={{ currentGame, legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand}}>
         {children}
         </GameContext.Provider>
     );

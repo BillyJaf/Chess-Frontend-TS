@@ -8,6 +8,17 @@ const TileBoard: React.FC = () => {
   const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
   const { legalMoves, pieceInHand } = useGame();
 
+  const legalMovesWithoutFen: {[key: string]: string[]} = {};
+  for (const startSquare in legalMoves) {
+    for (const [endSquare, _] of legalMoves[startSquare]) {
+        if (startSquare in legalMovesWithoutFen) {
+            legalMovesWithoutFen[startSquare].push(endSquare)
+        } else {
+            legalMovesWithoutFen[startSquare] = [endSquare]
+        }
+    }
+  }
+
   for (let row = 0; row < size; row++) {
     for (let col = 0; col < size; col++) {
 
@@ -16,7 +27,7 @@ const TileBoard: React.FC = () => {
         // Light Squares:
         if ((row + col) % 2 === 0) {
             // If we are holding a piece, highlight available squares:
-            if (!!pieceInHand && (square === pieceInHand.pieceOrigin || legalMoves[pieceInHand.pieceOrigin].includes(square))) {
+            if (!!pieceInHand && (square === pieceInHand.pieceOrigin || legalMovesWithoutFen[pieceInHand.pieceOrigin].includes(square))) {
                 squares.push(
                     <div
                     key={`${square}-Tile`}
@@ -37,7 +48,7 @@ const TileBoard: React.FC = () => {
         // Dark Squares:
         else {
             // If we are holding a piece, highlight available squares:
-            if (!!pieceInHand && (square === pieceInHand.pieceOrigin || legalMoves[pieceInHand.pieceOrigin].includes(square))) {
+            if (!!pieceInHand && (square === pieceInHand.pieceOrigin || legalMovesWithoutFen[pieceInHand.pieceOrigin].includes(square))) {
                 squares.push(
                     <div
                     key={`${square}-Tile`}

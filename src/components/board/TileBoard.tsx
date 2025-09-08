@@ -6,15 +6,15 @@ const TileBoard: React.FC = () => {
   const size = 8;
   const squares = [];
   const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
-  const { legalMoves, pieceInHand } = useGame();
+  const { legalMoves, pieceInHand, gameOver } = useGame();
 
   const legalMovesWithoutFen: {[key: string]: string[]} = {};
   for (const startSquare in legalMoves) {
     for (const [endSquare, _] of legalMoves[startSquare]) {
         if (startSquare in legalMovesWithoutFen) {
-            legalMovesWithoutFen[startSquare].push(endSquare)
+            legalMovesWithoutFen[startSquare].push(endSquare.slice(0,2))
         } else {
-            legalMovesWithoutFen[startSquare] = [endSquare]
+            legalMovesWithoutFen[startSquare] = [endSquare.slice(0,2)]
         }
     }
   }

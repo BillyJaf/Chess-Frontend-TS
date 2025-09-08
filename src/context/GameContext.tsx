@@ -15,6 +15,12 @@ interface VisualPosition {
     setVisualGame: (fenGame: string) => void;
     pieceInHand: PieceInHand | null;
     setPieceInHand: (piece: PieceInHand | null) => void;
+    // Used if we have just promoted a pawn:
+    promotionMove: string | null;
+    setPromotionMove: (square: string | null) => void;
+    // Used if the game has ended:
+    gameOver: string | null;
+    setGameOver: (winner: string) => void;
 }
 
 const GameContext = createContext<VisualPosition | undefined>(undefined);
@@ -27,6 +33,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [visualGame, setVisualGame] = useState<string>(fenGameToVisualGame(currentGame.fenGame));
     const [pieceInHand, setPieceInHand] = useState<PieceInHand | null>(null);
     const [legalMoves, setLegalMoves] = useState<{[key: string]: [string, string][]}>({});
+    const [promotionMove, setPromotionMove] = useState<string | null>(null);
+    const [gameOver, setGameOver] = useState<string>("");
 
     useEffect(() => {
         fetchLegalMoves(startingPosition).then((data) => {
@@ -35,7 +43,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     return (
-        <GameContext.Provider value={{ currentGame, legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand}}>
+        <GameContext.Provider value={{ currentGame, legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand, promotionMove, setPromotionMove, gameOver, setGameOver}}>
         {children}
         </GameContext.Provider>
     );

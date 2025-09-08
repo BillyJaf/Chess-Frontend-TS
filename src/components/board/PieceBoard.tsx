@@ -10,7 +10,7 @@ import { fetchBestMove } from "../../utils/bestMoveFetcher";
 const PieceBoard: React.FC = () => {
     const squares: JSX.Element[] = [];
     const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
-    const { legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand } = useGame();
+    const { legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand, setPromotionMove, gameOver, setGameOver } = useGame();
 
     const handleClick = (e: React.MouseEvent, squareIndex: number, square: string) => {
         // Picking up a piece:
@@ -25,7 +25,7 @@ const PieceBoard: React.FC = () => {
         if (!!pieceInHand && square !== pieceInHand.pieceOrigin) {
             let validSquare = false;
             for (const tuple of legalMoves[pieceInHand.pieceOrigin]) {
-                if (tuple[0] === square) {
+                if (tuple[0].slice(0,2) === square) {
                     validSquare = true;
                 }
             }
@@ -57,12 +57,27 @@ const PieceBoard: React.FC = () => {
         else {
             if (square !== pieceInHand!.pieceOrigin) {
                 for (const tuple of legalMoves[pieceInHand!.pieceOrigin]) {
-                    if (tuple[0] === square) {
-                        const resultingFen = tuple[1];
-                        setPieceInHand(null)
-                        setVisualGame(fenGameToVisualGame(resultingFen.split(" ")[0]))
-                        makeBotMove(resultingFen, setVisualGame, setLegalMoves)
-                        return;
+                    if (tuple[0].slice(0,2) === square) {
+                        // Normal piece move (not pawn promotion)
+                        if (tuple[0].length == 2) {
+                            const resultingFen = tuple[1];
+                            setPieceInHand(null)
+                            setVisualGame(fenGameToVisualGame(resultingFen.split(" ")[0]))
+                            makeBotMove(resultingFen, setVisualGame, setLegalMoves, setGameOver)
+                            return;
+                        } else {
+                            setPieceInHand(update)
+                            setVisualGame(visualGame.slice(0, squareIndex) + currentlyHeldPiece + visualGame.slice(squareIndex + 1))
+
+                            setPromotionMove(pieceInHand!.pieceOrigin + tuple[0]);
+                            
+                            // const resultingFen = tuple[1];
+                            // setPieceInHand(null)
+                            // setVisualGame(fenGameToVisualGame(resultingFen.split(" ")[0]))
+                            // makeBotMove(resultingFen, setVisualGame, setLegalMoves)
+
+                            return;
+                        }
                     }
                 }
             } 
@@ -81,7 +96,7 @@ const PieceBoard: React.FC = () => {
         const imagePath: string = isWhite ? `../assets/white-pieces/${piece}.png` : `../assets/black-pieces/${piece}.png`;
 
         squares.push(
-            <img className={styles.piece} src={imagePath} alt="../assets/white-pieces/X.png" key={square} onClick={(e) => handleClick(e, i, square)}/>
+            <img className={!!gameOver ? styles.pieceGameOver : styles.piece} src={imagePath} alt="../assets/white-pieces/X.png" key={square} onClick={(e) => handleClick(e, i, square)}/>
         );
         return;
     })

@@ -1,0 +1,17 @@
+.gameover {
+  position: absolute;
+  margin-left: 50%;
+  margin-right: 50%;
+  width: 180px;
+  height: 40px;
+  border: 2px solid black;
+  background-color: white;
+  border-radius: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  font-size: 1.5rem;
+}

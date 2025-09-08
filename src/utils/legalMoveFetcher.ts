@@ -27,7 +27,7 @@ export async function fetchLegalMoves(fen: string) {
 
     for (const [UCImove, fen] of parsedLegalMovesResponse.moves) {
         let startSquare = UCImove.slice(0, 2);
-        let endSquare = UCImove.slice(2, 4);
+        let endSquare = UCImove.slice(2);
         
         if (startSquare in internalLegalMoves) {
             internalLegalMoves[startSquare].push([endSquare, fen])

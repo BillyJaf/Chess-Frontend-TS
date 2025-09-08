@@ -17,8 +17,6 @@ export async function fetchBestMove(fen: string) {
     const data = await response.text();
     const parsedBestMoveResponse = JSON.parse(data) as BestMoveResponse;
 
-    console.log(parsedBestMoveResponse)
-
     return parsedBestMoveResponse
 }
 

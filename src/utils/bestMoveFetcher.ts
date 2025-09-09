@@ -1,6 +1,6 @@
 // Returned type from backend
 interface BestMoveResponse {
-    winner: string | null;
+    checkmate: boolean;
     stalemate: boolean;
     uci_move: string;
     resulting_fen: string;
@@ -16,6 +16,8 @@ export async function fetchBestMove(fen: string) {
 
     const data = await response.text();
     const parsedBestMoveResponse = JSON.parse(data) as BestMoveResponse;
+
+    console.log(parsedBestMoveResponse)
 
     return parsedBestMoveResponse
 }

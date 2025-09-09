@@ -63,6 +63,7 @@ const PieceBoard: React.FC = () => {
                             const resultingFen = tuple[1];
                             setPieceInHand(null)
                             setVisualGame(fenGameToVisualGame(resultingFen.split(" ")[0]))
+                            setLegalMoves({})
                             makeBotMove(resultingFen, setVisualGame, setLegalMoves, setGameOver)
                             return;
                         } else {

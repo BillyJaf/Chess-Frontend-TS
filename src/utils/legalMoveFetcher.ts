@@ -14,7 +14,7 @@ interface LegalMovesInternal {
 
 export async function fetchLegalMoves(fen: string) {
     const response = await fetch(
-        "http://localhost:3600/legal_moves", {
+        "https://backend-chess-bot.fly.dev/legal_moves", {
         method: "Post",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(fen),

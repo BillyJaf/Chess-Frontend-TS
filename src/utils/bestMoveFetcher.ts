@@ -8,7 +8,7 @@ interface BestMoveResponse {
 
 export async function fetchBestMove(fen: string) {
     const response = await fetch(
-        "http://backend-chess-bot.fly.dev/best_move", {
+        "https://backend-chess-bot.fly.dev/best_move", {
         method: "Post",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(fen),

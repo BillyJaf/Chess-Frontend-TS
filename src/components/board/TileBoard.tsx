@@ -6,7 +6,7 @@ const TileBoard: React.FC = () => {
   const size = 8;
   const squares = [];
   const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
-  const { legalMoves, pieceInHand, gameOver } = useGame();
+  const { legalMoves, pieceInHand } = useGame();
 
   const legalMovesWithoutFen: {[key: string]: string[]} = {};
   for (const startSquare in legalMoves) {

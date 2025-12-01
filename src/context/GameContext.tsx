@@ -3,11 +3,18 @@ import { FenPosition, type PieceInHand } from "../utils/types";
 import { fenGameToVisualGame } from "../utils/helpers";
 import { fetchLegalMoves } from "../utils/legalMoveFetcher";
 
+interface InternalGameState {
+    endSquare: string;
+    resultingFEN: string;
+    gameOver: string | null;
+}
+
 interface VisualPosition {
     // Real current game
     currentGame: FenPosition;
-    legalMoves: {[key: string]: [string, string][]}
-    setLegalMoves: (legalMoves: {[key: string]: [string, string][]}) => void;
+    
+    legalMoves: {[key: string]: InternalGameState[]}
+    setLegalMoves: (legalMoves: {[key: string]: InternalGameState[]}) => void;
     // Visual representation of the game:
     // 64 character string holding all pieces. Blank tiles are represented with 'x'
     // If there is a piece in hand, then the corresponding square will be temporaily blank
@@ -32,7 +39,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const [visualGame, setVisualGame] = useState<string>(fenGameToVisualGame(currentGame.fenGame));
     const [pieceInHand, setPieceInHand] = useState<PieceInHand | null>(null);
-    const [legalMoves, setLegalMoves] = useState<{[key: string]: [string, string][]}>({});
+    const [legalMoves, setLegalMoves] = useState<{[key: string]: InternalGameState[]}>({});
     const [promotionMove, setPromotionMove] = useState<string | null>(null);
     const [gameOver, setGameOver] = useState<string>("");
 

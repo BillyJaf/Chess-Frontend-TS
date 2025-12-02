@@ -11,7 +11,7 @@ const Game: React.FC = () => {
       <GameOver />
       <Board />
     </>
-);
+  );
 };
 
 export default Game;

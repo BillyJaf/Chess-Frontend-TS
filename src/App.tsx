@@ -1,15 +1,17 @@
-import { useState } from 'react'
-import './App.css'
-import type { AppMode } from './ui/types'
 import Game from './ui/components/game/Game'
+import NavigationBar from './ui/components/navigationBar/NavigationBar'
 import Setup from './ui/components/setup/Setup'
+import { GameProvider } from './ui/context/GameContext'
+import styles from "./App.module.css"
 
 function App() {
   return (
-    <>
-      <Setup />
-      <Game />
-    </>
+    <div className={styles.app}>
+      <NavigationBar />
+      <GameProvider>
+        <Game />
+      </GameProvider>
+    </div>
   )
 }
 

@@ -1,4 +1,4 @@
-import { Box, Button, Modal, TextField, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Box, Button, Modal, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { useState } from "react";
 import { useGameSettings } from "../../context/GameSettingsContext";
 import { validateCustomFen } from "../../../utils/helpers";
@@ -26,7 +26,8 @@ const headerBoxStyle = {
     fontSize: 20,
     fontWeight: 600,
     pb: 1,
-    borderBottom: "1px solid grey"
+    borderBottom: "1px solid grey",
+    px: 4
 }
 
 interface ModalOpen {
@@ -72,7 +73,7 @@ const NewGameModal: React.FC<ModalOpen> = ( { modalOpen, setModalOpen }: ModalOp
   );
 
   const startGame = (
-    <Button variant="outlined" onClick={handleStartGame}>Start Game</Button>
+    <Button variant="contained" onClick={handleStartGame}>Start Game</Button>
   );
 
 
@@ -84,7 +85,9 @@ const NewGameModal: React.FC<ModalOpen> = ( { modalOpen, setModalOpen }: ModalOp
     >
         <Box sx={mainBoxStyle}>
             <Box sx={headerBoxStyle}>
-                GAME SETTINGS
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                  Game Settings
+                </Typography>
             </Box>
             {playerColourSelector}
             {customFENSelector}

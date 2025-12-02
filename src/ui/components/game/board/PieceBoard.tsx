@@ -1,14 +1,16 @@
 import React, { type JSX } from "react";
 import styles from "./PieceBoard.module.css"
-import { useGame } from "../../../context/GameContext";
+import { useGameVisuals } from "../../../context/GameVisualsContext";
 import type { UIPieceInHand } from "../../../types";
 import { fenGameToVisualGame } from "../../../../utils/helpers";
 import { makeBotMove } from "../../../../utils/makeBotMove";
+import { useGameSettings } from "../../../context/GameSettingsContext";
 
 const PieceBoard: React.FC = () => {
     const squares: JSX.Element[] = [];
     const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
-    const { legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand, setPromotionMove, gameOver, setGameOver } = useGame();
+    const { legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand, setPromotionMove, gameOver, setGameOver } = useGameVisuals();
+    const { playerColour } = useGameSettings();
 
     const handleClick = (e: React.MouseEvent, squareIndex: number, square: string) => {
         // Picking up a piece:
@@ -60,12 +62,12 @@ const PieceBoard: React.FC = () => {
                         if (endSquare.length == 2) {
                             const resultingFen = resultingFEN;
                             setPieceInHand(null)
-                            setVisualGame(fenGameToVisualGame(resultingFen.split(" ")[0]))
+                            setVisualGame(fenGameToVisualGame(resultingFen.split(" ")[0], playerColour))
                             setLegalMoves({})
                             if (!!gameOver) {
                                 setGameOver(gameOver)
                             } else {
-                                makeBotMove(resultingFen, setVisualGame, setLegalMoves, setGameOver)
+                                makeBotMove(resultingFen, playerColour, setVisualGame, setLegalMoves, setGameOver)
                             }
                             return;
                         } else {
@@ -87,8 +89,8 @@ const PieceBoard: React.FC = () => {
     };
 
     visualGame.split("").map((piece, i) => {
-        const file = files[i % 8];
-        const rank = 8 - Math.floor(i / 8);
+        const file = playerColour === 'White' ? files[i % 8] : files[7 - (i % 8)];
+        const rank = playerColour === 'White' ? 8 - Math.floor(i / 8) : Math.ceil(i / 8);
         const square = `${file}${rank}`;
 
         const isWhite: boolean = piece === piece.toUpperCase();

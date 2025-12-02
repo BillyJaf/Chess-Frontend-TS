@@ -3,6 +3,8 @@ import { fenGameToVisualGame } from "../../utils/helpers";
 import { UIGameState, type UIPieceInHand, type UIPossibleGameState } from "../types";
 import { fetchLegalMoves } from "../../api/posts";
 import { legalMovesResponseToUILegalMoves } from "../../api/converters";
+import { useGameSettings } from "./GameSettingsContext";
+import { makeBotMove } from "../../utils/makeBotMove";
 
 interface VisualPosition {
     // Real current game
@@ -25,36 +27,48 @@ interface VisualPosition {
     setGameOver: (result: string | null) => void;
 }
 
-const GameContext = createContext<VisualPosition | undefined>(undefined);
-const startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+const GameVisualsContext = createContext<VisualPosition | undefined>(undefined);
 
-export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const GameVisualsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const { playerColour, startingFEN, resetCounter } = useGameSettings();
+
     // Construct the game:
-    const currentGame = new UIGameState(startingPosition);
+    const currentGame = new UIGameState(startingFEN);
 
-    const [visualGame, setVisualGame] = useState<string>(fenGameToVisualGame(currentGame.fenGame));
+    const [visualGame, setVisualGame] = useState<string>(fenGameToVisualGame(currentGame.fenGame, playerColour));
     const [pieceInHand, setPieceInHand] = useState<UIPieceInHand | null>(null);
     const [legalMoves, setLegalMoves] = useState<{[startSquare: string]: UIPossibleGameState[]}>({});
     const [promotionMove, setPromotionMove] = useState<string | null>(null);
     const [gameOver, setGameOver] = useState<string | null>(null);
 
     useEffect(() => {
-        fetchLegalMoves(startingPosition).then((legalMovesResponse) => {
-            const uiLegalMoves = legalMovesResponseToUILegalMoves(legalMovesResponse)
-            setGameOver(uiLegalMoves.gameOver)
-            setLegalMoves(uiLegalMoves.legalMoves)
-        })
-    }, []);
+        // Reset everything
+        setVisualGame(fenGameToVisualGame(currentGame.fenGame, playerColour))
+        setLegalMoves({})
+        setPieceInHand(null)
+        setPromotionMove(null)
+        setGameOver(null)
+        // Get the required legalmoves / bestmove
+        if (playerColour === 'White') {
+            fetchLegalMoves(startingFEN).then((legalMovesResponse) => {
+                const uiLegalMoves = legalMovesResponseToUILegalMoves(legalMovesResponse)
+                setGameOver(uiLegalMoves.gameOver)
+                setLegalMoves(uiLegalMoves.legalMoves)
+            })
+        } else {
+            makeBotMove(startingFEN, playerColour, setVisualGame, setLegalMoves, setGameOver)
+        }
+    }, [resetCounter]);
 
     return (
-        <GameContext.Provider value={{ currentGame, legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand, promotionMove, setPromotionMove, gameOver, setGameOver}}>
-        {children}
-        </GameContext.Provider>
+        <GameVisualsContext.Provider value={{ currentGame, legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand, promotionMove, setPromotionMove, gameOver, setGameOver}}>
+            {children}
+        </GameVisualsContext.Provider>
     );
 };
 
-export const useGame = () => {
-    const context = useContext(GameContext);
+export const useGameVisuals = () => {
+    const context = useContext(GameVisualsContext);
     if (!context) {
         throw new Error("No Context Provided.");
     }

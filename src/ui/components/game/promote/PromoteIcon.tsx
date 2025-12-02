@@ -1,6 +1,7 @@
 import { fenGameToVisualGame } from "../../../../utils/helpers";
 import { makeBotMove } from "../../../../utils/makeBotMove";
-import { useGame } from "../../../context/GameContext";
+import { useGameSettings } from "../../../context/GameSettingsContext";
+import { useGameVisuals } from "../../../context/GameVisualsContext";
 import styles from "./PromoteIcon.module.css";
 
 interface Piece {
@@ -8,11 +9,8 @@ interface Piece {
 }
 
 const PromotePawnIcon: React.FC<Piece> = ( { piece }: Piece ) => {
-//   const { pieceInHand } = useGame();
-//   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
-
-//   if (!pieceInHand || !pos) return null;
-    const { legalMoves, setLegalMoves, setVisualGame, promotionMove, setPromotionMove, setGameOver } = useGame();
+  const { legalMoves, setLegalMoves, setVisualGame, promotionMove, setPromotionMove, setGameOver } = useGameVisuals();
+  const { playerColour } = useGameSettings();
 
   const isWhite: boolean = piece === piece.toUpperCase();
   const imagePath: string = isWhite ? `../assets/white-pieces/${piece}.png` : `../assets/black-pieces/${piece}.png`;
@@ -30,13 +28,13 @@ const PromotePawnIcon: React.FC<Piece> = ( { piece }: Piece ) => {
             break;
         }
     }
-    setVisualGame(fenGameToVisualGame(updatedFEN.split(" ")[0]))
+    setVisualGame(fenGameToVisualGame(updatedFEN.split(" ")[0], playerColour))
 
     if (!!gameWinner) {
         setLegalMoves({})
         setGameOver(gameWinner)
     } else {
-        makeBotMove(updatedFEN, setVisualGame, setLegalMoves, setGameOver)
+        makeBotMove(updatedFEN, playerColour, setVisualGame, setLegalMoves, setGameOver)
     }
   }
 

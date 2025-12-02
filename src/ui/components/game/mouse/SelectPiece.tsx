@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useGame } from "../../../context/GameContext";
+import { useGameVisuals } from "../../../context/GameVisualsContext";
 
 const SelectPiece: React.FC = () => {
-  const { pieceInHand } = useGame();
+  const { pieceInHand } = useGameVisuals();
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {

@@ -1,8 +1,8 @@
-import { useGame } from "../../../context/GameContext";
+import { useGameVisuals } from "../../../context/GameVisualsContext";
 import styles from "./GameOver.module.css"
 
 const GameOver: React.FC = () => {
-  const { gameOver } = useGame();
+  const { gameOver } = useGameVisuals();
 
   let message = "Stalemate!";
   if (gameOver === 'Black') {

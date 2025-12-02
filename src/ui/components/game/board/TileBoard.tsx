@@ -1,12 +1,13 @@
 import React from "react";
 import styles from "./TileBoard.module.css"
-import { useGame } from "../../../context/GameContext";
+import { useGameVisuals } from "../../../context/GameVisualsContext";
+import { useGameSettings } from "../../../context/GameSettingsContext";
 
 const TileBoard: React.FC = () => {
-  const size = 8;
   const squares = [];
   const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
-  const { legalMoves, pieceInHand } = useGame();
+  const { legalMoves, pieceInHand } = useGameVisuals();
+  const { playerColour } = useGameSettings();
 
   const legalMovesWithoutFen: {[key: string]: string[]} = {};
   for (const startSquare in legalMoves) {
@@ -19,10 +20,10 @@ const TileBoard: React.FC = () => {
     }
   }
 
-  for (let row = 0; row < size; row++) {
-    for (let col = 0; col < size; col++) {
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
 
-        const square: string = `${files[col]}${8 - row}`
+        const square: string = playerColour === 'White' ? `${files[col]}${8 - row}` : `${files[7 - col]}${row + 1}`;
 
         // Light Squares:
         if ((row + col) % 2 === 0) {

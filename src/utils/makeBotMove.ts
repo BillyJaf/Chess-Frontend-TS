@@ -5,6 +5,7 @@ import { fenGameToVisualGame } from "./helpers";
 
 export async function makeBotMove(
     fen: string, 
+    playerColour: string,
     setVisualGame: (fenGame: string) => void, 
     setLegalMoves: (legalMoves: { [startSquare: string]: UIPossibleGameState[]; }) => void, 
     setGameOver: (gameOver: string | null) => void
@@ -12,7 +13,7 @@ export async function makeBotMove(
     const apiBestMove = await fetchBestMove(fen)
     const uiBestMove = bestMoveResponseToUIBestMove(apiBestMove)
 
-    setVisualGame(fenGameToVisualGame(uiBestMove.resultingFEN.split(" ")[0]))
+    setVisualGame(fenGameToVisualGame(uiBestMove.resultingFEN.split(" ")[0], playerColour))
     setLegalMoves(uiBestMove.resultingLegalMoves)
     setGameOver(uiBestMove.gameOver)
 }

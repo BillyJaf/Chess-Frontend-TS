@@ -1,4 +1,4 @@
-import { useGame } from "../../context/GameContext";
+import { useGame } from "../../../context/GameContext";
 import styles from "./PromotePawn.module.css"
 import PromotePawnIcon from "./PromoteIcon";
 

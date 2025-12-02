@@ -53,3 +53,5 @@ export interface UIPieceInHand {
     x: number;
     y: number;
 }
+
+export type AppMode = "setup" | "playing";

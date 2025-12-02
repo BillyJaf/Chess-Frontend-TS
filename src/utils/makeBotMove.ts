@@ -11,7 +11,6 @@ export async function makeBotMove(
 ) {
     const apiBestMove = await fetchBestMove(fen)
     const uiBestMove = bestMoveResponseToUIBestMove(apiBestMove)
-    console.log(uiBestMove)
 
     setVisualGame(fenGameToVisualGame(uiBestMove.resultingFEN.split(" ")[0]))
     setLegalMoves(uiBestMove.resultingLegalMoves)

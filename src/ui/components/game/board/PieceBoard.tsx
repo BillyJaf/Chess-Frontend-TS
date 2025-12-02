@@ -1,9 +1,9 @@
 import React, { type JSX } from "react";
 import styles from "./PieceBoard.module.css"
-import { useGame } from "../../context/GameContext";
-import type { UIPieceInHand } from "../../types";
-import { fenGameToVisualGame } from "../../../utils/helpers";
-import { makeBotMove } from "../../../utils/makeBotMove";
+import { useGame } from "../../../context/GameContext";
+import type { UIPieceInHand } from "../../../types";
+import { fenGameToVisualGame } from "../../../../utils/helpers";
+import { makeBotMove } from "../../../../utils/makeBotMove";
 
 const PieceBoard: React.FC = () => {
     const squares: JSX.Element[] = [];

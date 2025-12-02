@@ -1,6 +1,6 @@
-import { fenGameToVisualGame } from "../../../utils/helpers";
-import { makeBotMove } from "../../../utils/makeBotMove";
-import { useGame } from "../../context/GameContext";
+import { fenGameToVisualGame } from "../../../../utils/helpers";
+import { makeBotMove } from "../../../../utils/makeBotMove";
+import { useGame } from "../../../context/GameContext";
 import styles from "./PromoteIcon.module.css";
 
 interface Piece {

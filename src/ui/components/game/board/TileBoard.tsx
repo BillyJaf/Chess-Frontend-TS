@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./TileBoard.module.css"
-import { useGame } from "../../context/GameContext";
+import { useGame } from "../../../context/GameContext";
 
 const TileBoard: React.FC = () => {
   const size = 8;

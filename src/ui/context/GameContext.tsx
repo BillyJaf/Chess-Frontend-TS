@@ -26,8 +26,7 @@ interface VisualPosition {
 }
 
 const GameContext = createContext<VisualPosition | undefined>(undefined);
-//const startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-const startingPosition = "k7/7R/8/8/8/6R1/8/K7 w - - 0 1"
+const startingPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     // Construct the game:

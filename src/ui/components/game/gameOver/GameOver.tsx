@@ -1,4 +1,4 @@
-import { useGame } from "../../context/GameContext";
+import { useGame } from "../../../context/GameContext";
 import styles from "./GameOver.module.css"
 
 const GameOver: React.FC = () => {

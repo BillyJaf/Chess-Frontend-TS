@@ -1,9 +1,9 @@
 import React, { type JSX } from "react";
 import styles from "./PieceBoard.module.css"
 import { useGame } from "../../context/GameContext";
-import type { PieceInHand } from "../../utils/types";
-import { fenGameToVisualGame } from "../../utils/helpers";
-import { makeBotMove } from "../../utils/makeBotMove";
+import type { UIPieceInHand } from "../../types";
+import { fenGameToVisualGame } from "../../../utils/helpers";
+import { makeBotMove } from "../../../utils/makeBotMove";
 
 const PieceBoard: React.FC = () => {
     const squares: JSX.Element[] = [];
@@ -22,8 +22,8 @@ const PieceBoard: React.FC = () => {
         // If we are placing a piece:
         if (!!pieceInHand && square !== pieceInHand.pieceOrigin) {
             let validSquare = false;
-            for (const tuple of legalMoves[pieceInHand.pieceOrigin]) {
-                if (tuple[0].slice(0,2) === square) {
+            for (const { endSquare } of legalMoves[pieceInHand.pieceOrigin]) {
+                if (endSquare.slice(0,2) === square) {
                     validSquare = true;
                 }
             }
@@ -40,7 +40,7 @@ const PieceBoard: React.FC = () => {
         let currentlyHeldPiece: string = !!pieceInHand ? pieceInHand.piece : 'X';
 
         // Updated
-        let update: PieceInHand | null = null;
+        let update: UIPieceInHand | null = null;
         // If we are picking up a piece:
         if (currentlyHeldPiece === 'X') {
             update = {
@@ -54,26 +54,26 @@ const PieceBoard: React.FC = () => {
         // Otherwise we are placing a piece:
         else {
             if (square !== pieceInHand!.pieceOrigin) {
-                for (const tuple of legalMoves[pieceInHand!.pieceOrigin]) {
-                    if (tuple[0].slice(0,2) === square) {
-                        // Normal piece move (not pawn promotion)
-                        if (tuple[0].length == 2) {
-                            const resultingFen = tuple[1];
+                for (const { endSquare, resultingFEN, gameOver } of legalMoves[pieceInHand!.pieceOrigin]) {
+                    if (endSquare.slice(0,2) === square) {
+                        // Normal piece move (not pawn promotion):
+                        if (endSquare.length == 2) {
+                            const resultingFen = resultingFEN;
                             setPieceInHand(null)
                             setVisualGame(fenGameToVisualGame(resultingFen.split(" ")[0]))
                             setLegalMoves({})
-                            makeBotMove(resultingFen, setVisualGame, setLegalMoves, setGameOver)
+                            if (!!gameOver) {
+                                setGameOver(gameOver)
+                            } else {
+                                makeBotMove(resultingFen, setVisualGame, setLegalMoves, setGameOver)
+                            }
                             return;
                         } else {
+                            // We are promoting a pawn:
                             setPieceInHand(update)
                             setVisualGame(visualGame.slice(0, squareIndex) + currentlyHeldPiece + visualGame.slice(squareIndex + 1))
 
-                            setPromotionMove(pieceInHand!.pieceOrigin + tuple[0]);
-                            
-                            // const resultingFen = tuple[1];
-                            // setPieceInHand(null)
-                            // setVisualGame(fenGameToVisualGame(resultingFen.split(" ")[0]))
-                            // makeBotMove(resultingFen, setVisualGame, setLegalMoves)
+                            setPromotionMove(pieceInHand!.pieceOrigin + endSquare);
 
                             return;
                         }

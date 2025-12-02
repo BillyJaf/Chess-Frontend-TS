@@ -1,6 +1,6 @@
+import { fenGameToVisualGame } from "../../../utils/helpers";
+import { makeBotMove } from "../../../utils/makeBotMove";
 import { useGame } from "../../context/GameContext";
-import { fenGameToVisualGame } from "../../utils/helpers";
-import { makeBotMove } from "../../utils/makeBotMove";
 import styles from "./PromoteIcon.module.css";
 
 interface Piece {
@@ -18,19 +18,26 @@ const PromotePawnIcon: React.FC<Piece> = ( { piece }: Piece ) => {
   const imagePath: string = isWhite ? `../assets/white-pieces/${piece}.png` : `../assets/black-pieces/${piece}.png`;
 
   const handleClick = () => {
-    const startSquare = promotionMove!.slice(0,2)
-    const endSquare = promotionMove!.slice(2,4)
+    const startSquareClicked = promotionMove!.slice(0,2)
+    const endSquareClicked = promotionMove!.slice(2,4)
     setPromotionMove(null);
-    let resultingFen = "";
-    for (const [end, fen] of legalMoves[startSquare]) {
-        if (end[2] == piece.toLowerCase() && end.slice(0,2) == endSquare) {
-            resultingFen = fen;
+    let updatedFEN = "";
+    let gameWinner = null;
+    for (const { endSquare, resultingFEN, gameOver } of legalMoves[startSquareClicked]) {
+        if (endSquare[2] == piece.toLowerCase() && endSquare.slice(0,2) == endSquareClicked) {
+            updatedFEN = resultingFEN;
+            gameWinner = gameOver;
             break;
         }
     }
-    setVisualGame(fenGameToVisualGame(resultingFen.split(" ")[0]))
+    setVisualGame(fenGameToVisualGame(updatedFEN.split(" ")[0]))
 
-    makeBotMove(resultingFen, setVisualGame, setLegalMoves, setGameOver)
+    if (!!gameWinner) {
+        setLegalMoves({})
+        setGameOver(gameWinner)
+    } else {
+        makeBotMove(updatedFEN, setVisualGame, setLegalMoves, setGameOver)
+    }
   }
 
   return ( 

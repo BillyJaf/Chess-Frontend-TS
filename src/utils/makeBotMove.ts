@@ -1,19 +1,19 @@
-import { fetchBestMove } from "./bestMoveFetcher";
-import { backend_gameover_to_frontend_gameover, fenGameToVisualGame } from "./helpers";
+import { bestMoveResponseToUIBestMove } from "../api/converters";
+import { fetchBestMove } from "../api/posts";
+import type { UIPossibleGameState } from "../ui/types";
+import { fenGameToVisualGame } from "./helpers";
 
-export async function makeBotMove(fen: string, setVisualGame: (fenGame: string) => void, setLegalMoves: (legalMoves: {
-    [key: string]: [string, string][];
-}) => void, setGameOver: (gameOver: string) => void) {
-    const botMove = await fetchBestMove(fen);
-    const gameOver = backend_gameover_to_frontend_gameover(botMove.gameOver)
+export async function makeBotMove(
+    fen: string, 
+    setVisualGame: (fenGame: string) => void, 
+    setLegalMoves: (legalMoves: { [startSquare: string]: UIPossibleGameState[]; }) => void, 
+    setGameOver: (gameOver: string | null) => void
+) {
+    const apiBestMove = await fetchBestMove(fen)
+    const uiBestMove = bestMoveResponseToUIBestMove(apiBestMove)
+    console.log(uiBestMove)
 
-    if (!gameOver) {
-        const legal_moves = botMove.moves
-        setVisualGame(fenGameToVisualGame(botMove.resulting_fen.split(" ")[0]))
-
-        setLegalMoves(legal_moves)
-    } else {
-        setLegalMoves({})
-        setGameOver(gameOver)
-    }
+    setVisualGame(fenGameToVisualGame(uiBestMove.resultingFEN.split(" ")[0]))
+    setLegalMoves(uiBestMove.resultingLegalMoves)
+    setGameOver(uiBestMove.gameOver)
 }

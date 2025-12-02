@@ -5,10 +5,10 @@ const GameOver: React.FC = () => {
   const { gameOver } = useGame();
 
   let message = "Stalemate!";
-  if (gameOver == "b") {
-    message = "White Wins!"
-  } else {
+  if (gameOver === 'Black') {
     message = "Black Wins!"
+  } else if (gameOver === 'White') {
+    message = "White Wins!"
   }
 
   return ( 

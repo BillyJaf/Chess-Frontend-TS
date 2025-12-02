@@ -10,7 +10,7 @@ const TileBoard: React.FC = () => {
 
   const legalMovesWithoutFen: {[key: string]: string[]} = {};
   for (const startSquare in legalMoves) {
-    for (const [endSquare, _] of legalMoves[startSquare]) {
+    for (const { endSquare } of legalMoves[startSquare]) {
         if (startSquare in legalMovesWithoutFen) {
             legalMovesWithoutFen[startSquare].push(endSquare.slice(0,2))
         } else {

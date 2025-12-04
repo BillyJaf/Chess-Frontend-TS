@@ -1,5 +1,5 @@
 import Board from "./board/Board";
-import GameOver from "./gameOver/GameOver";
+import GameOverModal from "./gameOver/GameOverModal";
 import SelectPiece from "./mouse/SelectPiece";
 import PromotePawn from "./promote/PromotePawn";
 
@@ -8,7 +8,7 @@ const Game: React.FC = () => {
     <>
       <SelectPiece />
       <PromotePawn />
-      <GameOver />
+      <GameOverModal />
       <Board />
     </>
   );

@@ -45,6 +45,7 @@ const NewGameModal: React.FC<ModalOpen> = ( { modalOpen, setModalOpen }: ModalOp
 
   const handleStartGame = () => {
     setStartingFEN(validateCustomFen(customFEN))
+    setCustomFEN('')
     setPlayerColour(selectedPlayerColour)
     setResetCounter(resetCounter + 1)
     setModalOpen(false)

@@ -2,70 +2,37 @@ import React from "react";
 import styles from "./TileBoard.module.css"
 import { useGameVisuals } from "../../../context/GameVisualsContext";
 import { useGameSettings } from "../../../context/GameSettingsContext";
+import { ranksAndFiles } from "../../../../utils/helpers";
 
 const TileBoard: React.FC = () => {
-  const squares = [];
-  const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
   const { legalMoves, pieceInHand } = useGameVisuals();
   const { playerColour } = useGameSettings();
+  const ranksFiles = ranksAndFiles(playerColour);
+  const squares = [];
+  const legalMovesWithoutFen: {[startSquare: string]: string[]} = {};
 
-  const legalMovesWithoutFen: {[key: string]: string[]} = {};
   for (const startSquare in legalMoves) {
+    legalMovesWithoutFen[startSquare] = [startSquare]
     for (const { endSquare } of legalMoves[startSquare]) {
-        if (startSquare in legalMovesWithoutFen) {
-            legalMovesWithoutFen[startSquare].push(endSquare.slice(0,2))
-        } else {
-            legalMovesWithoutFen[startSquare] = [endSquare.slice(0,2)]
-        }
+        legalMovesWithoutFen[startSquare].push(endSquare.slice(0,2))
     }
   }
-
   for (let row = 0; row < 8; row++) {
-    for (let col = 0; col < 8; col++) {
+    for (let column = 0; column < 8; column++) {
 
-        const square: string = playerColour === 'White' ? `${files[col]}${8 - row}` : `${files[7 - col]}${row + 1}`;
+        const rankFile = ranksFiles[8*row + column]
 
-        // Light Squares:
-        if ((row + col) % 2 === 0) {
-            // If we are holding a piece, highlight available squares:
-            if (!!pieceInHand && (square === pieceInHand.pieceOrigin || legalMovesWithoutFen[pieceInHand.pieceOrigin].includes(square))) {
-                squares.push(
-                    <div
-                    key={`${square}-Tile`}
-                    className={styles.lightHighlight}
-                    />
-                );
-            }
-            else {
-                squares.push(
-                    <div
-                    key={`${square}-Tile`}
-                    className={styles.light}
-                    />
-                );
-            }
+        let tileColour = (row + column) % 2 === 0 ? styles.light : styles.dark;
+        if (!!pieceInHand && legalMovesWithoutFen[pieceInHand.pieceOrigin].includes(rankFile)) {
+            tileColour = (row + column) % 2 === 0 ? styles.lightHighlight : styles.darkHighlight;
         }
 
-        // Dark Squares:
-        else {
-            // If we are holding a piece, highlight available squares:
-            if (!!pieceInHand && (square === pieceInHand.pieceOrigin || legalMovesWithoutFen[pieceInHand.pieceOrigin].includes(square))) {
-                squares.push(
-                    <div
-                    key={`${square}-Tile`}
-                    className={styles.darkHighlight}
-                    />
-                );
-            }
-            else {
-                squares.push(
-                    <div
-                    key={`${square}-Tile`}
-                    className={styles.dark}
-                    />
-                );
-            }
-        }
+        squares.push(
+            <div
+                key={`${rankFile}-Tile`}
+                className={tileColour}
+            />
+        );
     }
   }
 

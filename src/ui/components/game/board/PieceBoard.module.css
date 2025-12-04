@@ -15,8 +15,3 @@
 .piece:hover {
   background-color: #ff2c2c;
 }
-
-.pieceGameOver {
-  width: 60px;
-  height: 60px;
-}

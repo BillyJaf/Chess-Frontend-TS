@@ -2,14 +2,13 @@ import React, { type JSX } from "react";
 import styles from "./PieceBoard.module.css"
 import { useGameVisuals } from "../../../context/GameVisualsContext";
 import type { UIPieceInHand, UIPossibleGameState } from "../../../types";
-import { fenStringToVisualGame } from "../../../../utils/helpers";
+import { fenStringToVisualGame, ranksAndFiles } from "../../../../utils/helpers";
 import { makeBotMove } from "../../../../utils/makeBotMove";
 import { useGameSettings } from "../../../context/GameSettingsContext";
 
 const PieceBoard: React.FC = () => {
     const squares: JSX.Element[] = [];
-    const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
-    const { legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand, setPromotionMove, gameOver, setGameOver } = useGameVisuals();
+    const { legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand, setPromotionMove, setGameOver } = useGameVisuals();
     const { playerColour } = useGameSettings();
 
     const handlePickupPiece = (e: React.MouseEvent, squareIndex: number, square: string) => {
@@ -92,16 +91,21 @@ const PieceBoard: React.FC = () => {
         }
     };
 
-    visualGame.split("").map((piece, i) => {
-        const file = playerColour === 'White' ? files[i % 8] : files[7 - (i % 8)];
-        const rank = playerColour === 'White' ? 8 - Math.floor(i / 8) : Math.floor(i / 8) + 1;
-        const square = `${file}${rank}`;
+    const ranksFiles = ranksAndFiles(playerColour);
 
-        const isWhite: boolean = piece === piece.toUpperCase();
-        const imagePath: string = isWhite ? `../assets/white-pieces/${piece}.png` : `../assets/black-pieces/${piece}.png`;
+    visualGame.split("").map((piece, i) => {
+        const square = ranksFiles[i];
+        const colour = piece === piece.toUpperCase() ? 'white' : 'black';
+        const imagePath = `../assets/${colour}-pieces/${piece}.png`;
 
         squares.push(
-            <img className={!!gameOver ? styles.pieceGameOver : styles.piece} src={imagePath} alt="../assets/white-pieces/X.png" key={square} onClick={(e) => handleClick(e, i, square)}/>
+            <img 
+                className={styles.piece} 
+                src={imagePath} 
+                alt="../assets/white-pieces/X.png" 
+                key={square} 
+                onClick={(e) => handleClick(e, i, square)}
+            />
         );
         return;
     })

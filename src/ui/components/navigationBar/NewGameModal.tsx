@@ -41,14 +41,15 @@ const NewGameModal: React.FC<ModalOpen> = ( { modalOpen, setModalOpen }: ModalOp
   const [selectedWhite, setSelectedWhite] = useState<boolean>(true);
   const [customFEN, setCustomFEN] = useState<string>('');
 
+  const selectedPlayerColour = selectedWhite ? 'White' : 'Black';
+
   const handleStartGame = () => {
     setStartingFEN(validateCustomFen(customFEN))
-    setPlayerColour(selectedWhite ? 'White' : 'Black')
+    setPlayerColour(selectedPlayerColour)
     setResetCounter(resetCounter + 1)
     setModalOpen(false)
   }
   
-  const selectedPlayerColour = selectedWhite ? 'White' : 'Black';
   const playerColourSelector = (
     <ToggleButtonGroup
         color="primary"

@@ -1,14 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { fenGameToVisualGame } from "../../utils/helpers";
-import { UIGameState, type UIPieceInHand, type UIPossibleGameState } from "../types";
+import { fenStringToVisualGame } from "../../utils/helpers";
+import { type UIPieceInHand, type UIPossibleGameState } from "../types";
 import { fetchLegalMoves } from "../../api/posts";
 import { legalMovesResponseToUILegalMoves } from "../../api/converters";
 import { useGameSettings } from "./GameSettingsContext";
 import { makeBotMove } from "../../utils/makeBotMove";
 
 interface VisualPosition {
-    // Real current game
-    currentGame: UIGameState;
     // Dictionary of legal moves in current position, indexed by starting square.
     legalMoves: {[startSquare: string]: UIPossibleGameState[]}
     setLegalMoves: (legalMoves: {[startSquare: string]: UIPossibleGameState[]}) => void;
@@ -32,10 +30,7 @@ const GameVisualsContext = createContext<VisualPosition | undefined>(undefined);
 export const GameVisualsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { playerColour, startingFEN, resetCounter } = useGameSettings();
 
-    // Construct the game:
-    const currentGame = new UIGameState(startingFEN);
-
-    const [visualGame, setVisualGame] = useState<string>(fenGameToVisualGame(currentGame.fenGame, playerColour));
+    const [visualGame, setVisualGame] = useState<string>(fenStringToVisualGame(startingFEN, playerColour));
     const [pieceInHand, setPieceInHand] = useState<UIPieceInHand | null>(null);
     const [legalMoves, setLegalMoves] = useState<{[startSquare: string]: UIPossibleGameState[]}>({});
     const [promotionMove, setPromotionMove] = useState<string | null>(null);
@@ -43,13 +38,14 @@ export const GameVisualsProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
     useEffect(() => {
         // Reset everything
-        setVisualGame(fenGameToVisualGame(currentGame.fenGame, playerColour))
+        setVisualGame(fenStringToVisualGame(startingFEN, playerColour))
         setLegalMoves({})
         setPieceInHand(null)
         setPromotionMove(null)
         setGameOver(null)
         // Get the required legalmoves / bestmove
-        if (playerColour === 'White') {
+        const fenColour = startingFEN.split(" ")[1] === 'w' ? 'White' : 'Black'
+        if (playerColour === fenColour) {
             fetchLegalMoves(startingFEN).then((legalMovesResponse) => {
                 const uiLegalMoves = legalMovesResponseToUILegalMoves(legalMovesResponse)
                 setGameOver(uiLegalMoves.gameOver)
@@ -61,7 +57,7 @@ export const GameVisualsProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }, [resetCounter]);
 
     return (
-        <GameVisualsContext.Provider value={{ currentGame, legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand, promotionMove, setPromotionMove, gameOver, setGameOver}}>
+        <GameVisualsContext.Provider value={{ legalMoves, setLegalMoves, visualGame, setVisualGame, pieceInHand, setPieceInHand, promotionMove, setPromotionMove, gameOver, setGameOver}}>
             {children}
         </GameVisualsContext.Provider>
     );

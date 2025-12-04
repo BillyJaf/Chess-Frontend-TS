@@ -1,7 +1,7 @@
-import { bestMoveResponseToUIBestMove } from "../api/converters";
+import { bestMoveResponseToUICurrentGameState } from "../api/converters";
 import { fetchBestMove } from "../api/posts";
 import type { UIPossibleGameState } from "../ui/types";
-import { fenGameToVisualGame } from "./helpers";
+import { fenStringToVisualGame } from "./helpers";
 
 export async function makeBotMove(
     fen: string, 
@@ -11,9 +11,9 @@ export async function makeBotMove(
     setGameOver: (gameOver: string | null) => void
 ) {
     const apiBestMove = await fetchBestMove(fen)
-    const uiBestMove = bestMoveResponseToUIBestMove(apiBestMove)
+    const uiCurrentGameState = bestMoveResponseToUICurrentGameState(apiBestMove)
 
-    setVisualGame(fenGameToVisualGame(uiBestMove.resultingFEN.split(" ")[0], playerColour))
-    setLegalMoves(uiBestMove.resultingLegalMoves)
-    setGameOver(uiBestMove.gameOver)
+    setVisualGame(fenStringToVisualGame(uiCurrentGameState.resultingFEN, playerColour))
+    setLegalMoves(uiCurrentGameState.resultingLegalMoves)
+    setGameOver(uiCurrentGameState.gameOver)
 }

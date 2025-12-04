@@ -1,4 +1,4 @@
-import { fenGameToVisualGame } from "../../../../utils/helpers";
+import { fenStringToVisualGame } from "../../../../utils/helpers";
 import { makeBotMove } from "../../../../utils/makeBotMove";
 import { useGameSettings } from "../../../context/GameSettingsContext";
 import { useGameVisuals } from "../../../context/GameVisualsContext";
@@ -28,7 +28,7 @@ const PromotePawnIcon: React.FC<Piece> = ( { piece }: Piece ) => {
             break;
         }
     }
-    setVisualGame(fenGameToVisualGame(updatedFEN.split(" ")[0], playerColour))
+    setVisualGame(fenStringToVisualGame(updatedFEN, playerColour))
 
     if (!!gameWinner) {
         setLegalMoves({})

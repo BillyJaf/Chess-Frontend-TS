@@ -1,4 +1,4 @@
-import type { UIBestMove, UIPossibleGameState, UILegalMoves } from "../ui/types";
+import type { UICurrentGameState, UIPossibleGameState, UILegalMoves } from "../ui/types";
 import type { best_move_response, legal_moves_response, ResultingGameState } from "./types";
 
 export function legalMovesResponseToUILegalMoves(legalMovesResponse: legal_moves_response) {
@@ -13,18 +13,18 @@ export function legalMovesResponseToUILegalMoves(legalMovesResponse: legal_moves
     return uiLegalMoves
 }
 
-export function bestMoveResponseToUIBestMove(bestMoveResponse: best_move_response) {
+export function bestMoveResponseToUICurrentGameState(bestMoveResponse: best_move_response) {
 
     const uiGameStates = resultingGameStatesToUIGameStates(bestMoveResponse.resulting_legal_moves)
 
-    const uiBestMove: UIBestMove = {
+    const uiCurrentGameState: UICurrentGameState = {
         gameOver: bestMoveResponse.game_over,
         uciMove: bestMoveResponse.uci_move,
         resultingFEN: bestMoveResponse.resulting_fen,
         resultingLegalMoves: uiGameStates
     }
 
-    return uiBestMove
+    return uiCurrentGameState
 }
 
 export function resultingGameStatesToUIGameStates(resultingGameStates: ResultingGameState[]) {

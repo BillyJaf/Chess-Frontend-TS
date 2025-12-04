@@ -1,12 +1,14 @@
 import { useGameVisuals } from "../../../context/GameVisualsContext";
 import styles from "./PromotePawn.module.css"
 import PromotePawnIcon from "./PromoteIcon";
+import { useGameSettings } from "../../../context/GameSettingsContext";
 
 const PromotePawn: React.FC = () => {
-  const { promotionMove, currentGame } = useGameVisuals();
+  const { promotionMove } = useGameVisuals();
+  const { playerColour } = useGameSettings();
   const whiteChoices = ['N', 'B', 'R', 'Q']
   const blackChoices = ['n', 'b', 'r', 'q']
-  const choices = currentGame.activeColour == 'w' ? whiteChoices : blackChoices;
+  const choices = playerColour === 'White' ? whiteChoices : blackChoices;
 
   return ( 
     !!promotionMove &&

@@ -1,7 +1,7 @@
 import { Box, Button, Modal, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { useState } from "react";
-import { useGameSettings } from "../../context/GameSettingsContext";
-import { validateCustomFen } from "../../../utils/helpers";
+import { useGameSettings } from "../../../context/GameSettingsContext";
+import { validateCustomFen } from "../../../../utils/helpers";
 
 const mainBoxStyle = {
   position: 'absolute',

@@ -3,10 +3,10 @@ import { fetchBestMove } from "../../api/posts";
 import type { UICurrentGameState } from "../types/types";
 
 export async function makeBotMove(
-    fen: string, 
-    setCurrentGameState: (gamestate: UICurrentGameState) => void
+  fen: string,
+  setCurrentGameState: (gamestate: UICurrentGameState) => void,
 ) {
-    const apiBestMove = await fetchBestMove(fen);
-    const uiCurrentGameState = bestMoveResponseToUICurrentGameState(apiBestMove);
-    setCurrentGameState(uiCurrentGameState);
+  const apiBestMove = await fetchBestMove(fen);
+  const uiCurrentGameState = bestMoveResponseToUICurrentGameState(apiBestMove);
+  setCurrentGameState(uiCurrentGameState);
 }

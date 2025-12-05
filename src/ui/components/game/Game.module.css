@@ -1,13 +1,13 @@
 .game {
-    position: fixed;
-    left: 50%;
-    top: 50%;
+  position: fixed;
+  left: 50%;
+  top: 50%;
 }
 
 .boardHolder {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
 }

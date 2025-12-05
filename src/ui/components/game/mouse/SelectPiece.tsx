@@ -2,35 +2,35 @@ import { useEffect, useState } from "react";
 import { useGameVisuals } from "../../../context/GameVisualsContext";
 
 const SelectPiece: React.FC = () => {
-  const { pieceInHand } = useGameVisuals();
+  const { visualPieceInHand } = useGameVisuals();
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
-    if (!pieceInHand) {
+    if (!visualPieceInHand) {
       setPos(null);
       return;
     }
 
-    setPos({ x: pieceInHand.x, y: pieceInHand.y });
+    setPos({ x: visualPieceInHand.x, y: visualPieceInHand.y });
 
     const handleMouseMove = (e: MouseEvent) => {
       setPos({ x: e.clientX, y: e.clientY });
     };
 
-    if (pieceInHand) {
+    if (visualPieceInHand) {
       window.addEventListener("mousemove", handleMouseMove);
     }
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [pieceInHand]);
+  }, [visualPieceInHand]);
 
-  if (!pieceInHand || !pos) return null;
+  if (!visualPieceInHand || !pos) return null;
 
   return (
     <img
-      src={pieceInHand.piecePath}
+      src={visualPieceInHand.piecePath}
       alt="../assets/white-pieces/X.png"
       style={{
         position: "fixed",

@@ -1,5 +1,5 @@
-import { fenStringToVisualGame } from "../../../../utils/helpers";
-import { makeBotMove } from "../../../../utils/makeBotMove";
+import { fenStringToVisualFen } from "../../../utils/helpers";
+import { makeBotMove } from "../../../utils/makeBotMove";
 import { useGameSettings } from "../../../context/GameSettingsContext";
 import { useGameVisuals } from "../../../context/GameVisualsContext";
 import styles from "./PromoteIcon.module.css";
@@ -9,32 +9,32 @@ interface Piece {
 }
 
 const PromotePawnIcon: React.FC<Piece> = ( { piece }: Piece ) => {
-  const { legalMoves, setLegalMoves, setVisualGame, promotionMove, setPromotionMove, setGameOver } = useGameVisuals();
-  const { playerColour } = useGameSettings();
+  const { visualLegalMoves, setVisualLegalMoves, setVisualFEN, visualPromotionMove, setVisualPromotionMove, setVisualGameOver } = useGameVisuals();
+  const { playerColour, setCurrentGameState } = useGameSettings();
 
   const isWhite: boolean = piece === piece.toUpperCase();
   const imagePath: string = isWhite ? `../assets/white-pieces/${piece}.png` : `../assets/black-pieces/${piece}.png`;
 
   const handleClick = () => {
-    const startSquareClicked = promotionMove!.slice(0,2)
-    const endSquareClicked = promotionMove!.slice(2,4)
-    setPromotionMove(null);
+    const startSquareClicked = visualPromotionMove!.slice(0,2)
+    const endSquareClicked = visualPromotionMove!.slice(2,4)
+    setVisualPromotionMove(null);
     let updatedFEN = "";
     let gameWinner = null;
-    for (const { endSquare, resultingFEN, gameOver } of legalMoves[startSquareClicked]) {
+    for (const { endSquare, resultingFEN, gameOver } of visualLegalMoves[startSquareClicked]) {
         if (endSquare[2] == piece.toLowerCase() && endSquare.slice(0,2) == endSquareClicked) {
             updatedFEN = resultingFEN;
             gameWinner = gameOver;
             break;
         }
     }
-    setVisualGame(fenStringToVisualGame(updatedFEN, playerColour))
+    setVisualFEN(fenStringToVisualFen(updatedFEN, playerColour))
 
-    if (!!gameWinner) {
-        setLegalMoves({})
-        setGameOver(gameWinner)
+    if (gameWinner) {
+        setVisualLegalMoves({})
+        setVisualGameOver(gameWinner)
     } else {
-        makeBotMove(updatedFEN, playerColour, setVisualGame, setLegalMoves, setGameOver)
+        makeBotMove(updatedFEN, setCurrentGameState)
     }
   }
 

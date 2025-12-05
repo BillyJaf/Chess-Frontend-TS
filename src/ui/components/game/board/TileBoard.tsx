@@ -2,18 +2,18 @@ import React from "react";
 import styles from "./TileBoard.module.css"
 import { useGameVisuals } from "../../../context/GameVisualsContext";
 import { useGameSettings } from "../../../context/GameSettingsContext";
-import { ranksAndFiles } from "../../../../utils/helpers";
+import { ranksAndFiles } from "../../../utils/helpers";
 
 const TileBoard: React.FC = () => {
-  const { legalMoves, pieceInHand } = useGameVisuals();
+  const { visualLegalMoves, visualPieceInHand } = useGameVisuals();
   const { playerColour } = useGameSettings();
   const ranksFiles = ranksAndFiles(playerColour);
   const squares = [];
   const legalMovesWithoutFen: {[startSquare: string]: string[]} = {};
 
-  for (const startSquare in legalMoves) {
+  for (const startSquare in visualLegalMoves) {
     legalMovesWithoutFen[startSquare] = [startSquare]
-    for (const { endSquare } of legalMoves[startSquare]) {
+    for (const { endSquare } of visualLegalMoves[startSquare]) {
         legalMovesWithoutFen[startSquare].push(endSquare.slice(0,2))
     }
   }
@@ -23,7 +23,7 @@ const TileBoard: React.FC = () => {
         const rankFile = ranksFiles[8*row + column]
 
         let tileColour = (row + column) % 2 === 0 ? styles.light : styles.dark;
-        if (!!pieceInHand && legalMovesWithoutFen[pieceInHand.pieceOrigin].includes(rankFile)) {
+        if (!!visualPieceInHand && legalMovesWithoutFen[visualPieceInHand.pieceOrigin].includes(rankFile)) {
             tileColour = (row + column) % 2 === 0 ? styles.lightHighlight : styles.darkHighlight;
         }
 

@@ -1,7 +1,8 @@
 import { Box, Button, Modal, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { useState } from "react";
 import { useGameSettings } from "../../../context/GameSettingsContext";
-import { validateCustomFen } from "../../../../utils/helpers";
+import { validateCustomFen } from "../../../utils/helpers";
+import { startingGameState } from "../../../utils/constants";
 
 const mainBoxStyle = {
   position: 'absolute',
@@ -36,7 +37,7 @@ interface ModalOpen {
 }
 
 const NewGameModal: React.FC<ModalOpen> = ( { modalOpen, setModalOpen }: ModalOpen ) => {
-  const { setPlayerColour, setStartingFEN, resetCounter, setResetCounter } = useGameSettings();
+  const { setPlayerColour, setCurrentGameState, setFirstMove } = useGameSettings();
 
   const [selectedWhite, setSelectedWhite] = useState<boolean>(true);
   const [customFEN, setCustomFEN] = useState<string>('');
@@ -44,10 +45,14 @@ const NewGameModal: React.FC<ModalOpen> = ( { modalOpen, setModalOpen }: ModalOp
   const selectedPlayerColour = selectedWhite ? 'White' : 'Black';
 
   const handleStartGame = () => {
-    setStartingFEN(validateCustomFen(customFEN))
+    const validFEN = validateCustomFen(customFEN);
     setCustomFEN('')
     setPlayerColour(selectedPlayerColour)
-    setResetCounter(resetCounter + 1)
+    setCurrentGameState({
+      ...startingGameState,
+      fen: validFEN
+    })
+    setFirstMove(true)
     setModalOpen(false)
   }
   

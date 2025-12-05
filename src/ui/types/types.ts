@@ -1,13 +1,15 @@
+export type LegalMoves = {[startSquare: string]: UIPossibleGameState[]};
+
 export interface UICurrentGameState {
     gameOver: string | null;
-    uciMove: string;
-    resultingFEN: string,
-    resultingLegalMoves: {[startSquare: string]: UIPossibleGameState[]};
+    uciMove: string | null;
+    fen: string,
+    legalMoves: LegalMoves;
 }
 
 export interface UILegalMoves {
     gameOver: string | null;
-    legalMoves: {[startSquare: string]: UIPossibleGameState[]};
+    legalMoves: LegalMoves;
 }
 
 export interface UIPossibleGameState {
@@ -23,5 +25,3 @@ export interface UIPieceInHand {
     x: number;
     y: number;
 }
-
-export type AppMode = "setup" | "playing";

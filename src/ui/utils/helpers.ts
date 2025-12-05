@@ -1,8 +1,8 @@
-export const fenStringToVisualGame = (fen: string, playerColour: string): string => {
-    return fenGameToVisualGame(fen.split(" ")[0], playerColour);
+export const fenStringToVisualFen = (fen: string, playerColour: string): string => {
+    return fenGameToVisualFen(fen.split(" ")[0], playerColour);
 }
 
-const fenGameToVisualGame = (fenGame: string, playerColour: string): string => {
+const fenGameToVisualFen = (fenGame: string, playerColour: string): string => {
     let visualGame = fenGame.replace(/\//g, "").replace(/\d/g, (digit) => "X".repeat(Number(digit)))
     if (playerColour === 'Black') {
         visualGame = visualGame.split('').reverse().join('')

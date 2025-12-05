@@ -1,6 +1,7 @@
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { useGameSettings } from "../../../context/GameSettingsContext";
 import { useGameVisuals } from "../../../context/GameVisualsContext";
+import { startingGameState } from "../../../utils/constants";
 
 const mainBoxStyle = {
   position: 'absolute',
@@ -38,19 +39,20 @@ const buttonsBoxStyle = {
 }
 
 const GameOverModal: React.FC = () => {
-  const { gameOver, setGameOver } = useGameVisuals();
-  const { resetCounter, setResetCounter, setStartingFEN } = useGameSettings();
+  const { visualGameOver, setVisualGameOver } = useGameVisuals();
+  const { setPlayerColour, setCurrentGameState, setFirstMove } = useGameSettings();
 
   let message = "Stalemate!";
-  if (gameOver === 'Black') {
+  if (visualGameOver === 'Black') {
     message = "Black Wins!"
-  } else if (gameOver === 'White') {
+  } else if (visualGameOver === 'White') {
     message = "White Wins!"
   }
 
   const handlePlayAgain = () => {
-    setStartingFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
-    setResetCounter(resetCounter + 1)
+    setPlayerColour('White');
+    setCurrentGameState(startingGameState);
+    setFirstMove(true);
   }
 
   const playAgain = (
@@ -58,14 +60,14 @@ const GameOverModal: React.FC = () => {
   );
 
   const reviewGame = (
-    <Button variant="contained" onClick={() => setGameOver(null)}>View Board</Button>
+    <Button variant="contained" onClick={() => setVisualGameOver(null)}>View Board</Button>
   );
 
 
 
   return (
     <Modal
-        open={!!gameOver}
+        open={!!visualGameOver}
         onClose={() => {}}
     >
         <Box sx={mainBoxStyle}>

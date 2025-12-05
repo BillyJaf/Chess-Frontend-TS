@@ -21,9 +21,9 @@ const NavigationBar: React.FC = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Chess
           </Typography>
-          <Button color="inherit" onClick={() => setModalOpen(!modalOpen)} sx={
-            buttonStyle
-            }>New Game</Button>
+          <Button color="inherit" onClick={() => setModalOpen(!modalOpen)} sx={buttonStyle}>
+            New Game
+          </Button>
         </Toolbar>
       </AppBar>
       <NewGameModal modalOpen={modalOpen} setModalOpen={setModalOpen} />

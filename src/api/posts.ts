@@ -1,4 +1,4 @@
-import type { best_move_response, legal_moves_response } from "./types";
+import type { best_move_response, legal_moves_response, validate_fen_response } from "./types";
 
 export async function fetchBestMove(fen: string) {
   // const response = await fetch(
@@ -38,4 +38,24 @@ export async function fetchLegalMoves(fen: string) {
   const parsedLegalMovesResponse = JSON.parse(data) as legal_moves_response;
 
   return parsedLegalMovesResponse;
+}
+
+export async function validateFEN(fen: string) {
+  // const response = await fetch(
+  //     "https://backend-chess-bot.fly.dev/validate_fen", {
+  //     method: "Post",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(fen),
+  // });
+
+  const response = await fetch("http://localhost:8080/validate_fen", {
+    method: "Post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(fen),
+  });
+
+  const data = await response.text();
+  const parsedValidFen = JSON.parse(data) as validate_fen_response;
+
+  return parsedValidFen;
 }

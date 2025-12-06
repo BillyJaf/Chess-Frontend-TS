@@ -2,12 +2,14 @@ import type {
   UICurrentGameState,
   UIPossibleGameState,
   UILegalMoves,
+  UIValidFen,
   LegalMoves,
 } from "../ui/types/types";
 import type {
   best_move_response,
   legal_moves_response,
   ResultingGameState,
+  validate_fen_response,
 } from "./types";
 
 export function legalMovesResponseToUILegalMoves(
@@ -68,3 +70,12 @@ export function resultingGameStatesToUIGameStates(
 
   return uiGameStates;
 }
+
+export function validateFenResponseToUIValidFen(validate_fen_response: validate_fen_response) {
+  const uiValidFen: UIValidFen = {
+    valid: validate_fen_response.valid,
+    error: validate_fen_response.error
+  }
+  return uiValidFen
+}
+

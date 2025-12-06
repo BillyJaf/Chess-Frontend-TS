@@ -20,6 +20,11 @@ export interface UIPossibleGameState {
   gameOver: string | null;
 }
 
+export interface UIValidFen {
+  valid: boolean;
+  error: string | null;
+}
+
 export interface UIPieceInHand {
   piece: string; // Type of piece in FEN notation (i.e. p,P,b,B etc)
   pieceOrigin: string; // Where the piece we are holding came from (i.e. a1, h6 etc)

@@ -15,7 +15,7 @@ const fenGameToVisualFen = (fenGame: string, playerColour: string): string => {
   return visualGame;
 };
 
-export const validateCustomFen = (fen: string) => {
+export const parseCustomFen = (fen: string) => {
   if (fen === "") {
     return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
   }

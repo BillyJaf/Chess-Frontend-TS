@@ -9,8 +9,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useGameSettings } from "../../../context/GameSettingsContext";
-import { validateCustomFen } from "../../../utils/helpers";
+import { parseCustomFen } from "../../../utils/helpers";
 import { startingGameState } from "../../../utils/constants";
+import { validateFEN } from "../../../../api/posts";
+import { validateFenResponseToUIValidFen } from "../../../../api/converters";
 
 const mainBoxStyle = {
   position: "absolute",
@@ -53,19 +55,33 @@ const NewGameModal: React.FC<ModalOpen> = ({
 
   const [selectedWhite, setSelectedWhite] = useState<boolean>(true);
   const [customFEN, setCustomFEN] = useState<string>("");
+  const [validatingFEN, setValidatingFEN] = useState<boolean>(false);
+  const [fenError, setFenError] = useState<boolean>(false);
 
   const selectedPlayerColour = selectedWhite ? "White" : "Black";
 
   const handleStartGame = () => {
-    const validFEN = validateCustomFen(customFEN);
-    setCustomFEN("");
-    setPlayerColour(selectedPlayerColour);
-    setCurrentGameState({
-      ...startingGameState,
-      fen: validFEN,
-    });
-    setFirstMove(true);
-    setModalOpen(false);
+    setValidatingFEN(true);
+    const validFEN = parseCustomFen(customFEN);
+    validateFEN(validFEN).then((validate_fen_response) => {
+      setValidatingFEN(false);
+      const uiValidFen = validateFenResponseToUIValidFen(validate_fen_response);
+      if (uiValidFen.valid) {
+        setCustomFEN("");
+        setPlayerColour(selectedPlayerColour);
+        setCurrentGameState({
+          ...startingGameState,
+          fen: validFEN,
+        });
+        setFirstMove(true);
+        setModalOpen(false);
+      } else {
+        setFenError(true);
+        setTimeout(() => {
+          setFenError(false);
+        }, 3000);
+      }
+    })
   };
 
   const playerColourSelector = (
@@ -75,6 +91,7 @@ const NewGameModal: React.FC<ModalOpen> = ({
       exclusive
       onChange={() => setSelectedWhite(!selectedWhite)}
       aria-label="Platform"
+      disabled={validatingFEN}
     >
       <ToggleButton value="White">White</ToggleButton>
       <ToggleButton value="Black">Black</ToggleButton>
@@ -83,16 +100,18 @@ const NewGameModal: React.FC<ModalOpen> = ({
 
   const customFENSelector = (
     <TextField
+      error={fenError}
       id="outlined-FenSelector"
-      label="Starting FEN String"
+      label={fenError ? "" : "Starting FEN String"}
       defaultValue=""
-      helperText="Leave empty for default game."
+      helperText={fenError ? "Invalid FEN String" : "Leave empty for default game."}
       onChange={(event) => setCustomFEN(event.target.value)}
+      disabled={validatingFEN}
     />
   );
 
   const startGame = (
-    <Button variant="contained" onClick={handleStartGame}>
+    <Button variant="contained" onClick={handleStartGame} disabled={validatingFEN}>
       Start Game
     </Button>
   );

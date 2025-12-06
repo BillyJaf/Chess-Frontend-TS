@@ -1,9 +1,10 @@
 import Board from "./board/Board";
 import GameOverModal from "./gameOver/GameOverModal";
 import SelectPiece from "./mouse/SelectPiece";
-import SidePanel from "./sidePanel/SidePanel";
+import CapturedPiecePanel from "./panels/CapturedPiecePanel";
 import styles from "./Game.module.css";
 import PromoteModal from "./promote/PromoteModal";
+import GameHistoryPanel from "./panels/GameHistoryPanel";
 
 const Game: React.FC = () => {
   return (
@@ -12,9 +13,12 @@ const Game: React.FC = () => {
       <PromoteModal />
       <GameOverModal />
       <div className={styles.boardHolder}>
-        <SidePanel header={"Player"} />
+        <div className={styles.capturedPieceHolder}>
+          <CapturedPiecePanel header={"Player"} />
+          <CapturedPiecePanel header={"Bot"} />
+        </div>
         <Board />
-        <SidePanel header={"Bot"} />
+        <GameHistoryPanel />
       </div>
     </>
   );

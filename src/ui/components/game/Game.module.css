@@ -11,3 +11,11 @@
   justify-content: space-evenly;
   width: 100%;
 }
+
+.capturedPieceHolder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 480px;
+}

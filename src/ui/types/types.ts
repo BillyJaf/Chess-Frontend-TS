@@ -3,6 +3,7 @@ export type LegalMoves = { [startSquare: string]: UIPossibleGameState[] };
 export interface UICurrentGameState {
   gameOver: string | null;
   uciMove: string | null;
+  sanMove: string | null;
   fen: string;
   legalMoves: LegalMoves;
 }
@@ -15,6 +16,7 @@ export interface UILegalMoves {
 export interface UIPossibleGameState {
   endSquare: string;
   resultingFEN: string;
+  sanMove: string | null;
   gameOver: string | null;
 }
 

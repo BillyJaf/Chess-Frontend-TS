@@ -18,7 +18,7 @@ const PieceBoard: React.FC = () => {
     setVisualPromotionMove,
     setVisualGameOver,
   } = useGameVisuals();
-  const { playerColour, setCurrentGameState } = useGameSettings();
+  const { playerColour, setCurrentGameState, gameHistory, setGameHistory } = useGameSettings();
 
   const handlePickupPiece = (
     e: React.MouseEvent,
@@ -81,7 +81,7 @@ const PieceBoard: React.FC = () => {
       return;
     }
 
-    const { endSquare, resultingFEN, gameOver } = resultingGameState;
+    const { endSquare, resultingFEN, gameOver, sanMove } = resultingGameState;
     const pawnPromotion = endSquare.length === 3;
 
     setVisualPieceInHand(null);
@@ -95,6 +95,7 @@ const PieceBoard: React.FC = () => {
       return;
     } else {
       setVisualFEN(fenStringToVisualFen(resultingFEN, playerColour));
+      setGameHistory([...gameHistory, sanMove!])
       setVisualLegalMoves({});
       if (gameOver) {
         setVisualGameOver(gameOver);

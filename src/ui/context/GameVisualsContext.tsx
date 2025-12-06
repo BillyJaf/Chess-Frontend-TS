@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { fenStringToVisualFen } from "../utils/helpers";
-import { type LegalMoves, type UIPieceInHand } from "../types/types";
+import { type LegalMoves, type UICurrentGameState, type UIPieceInHand } from "../types/types";
 import { fetchBestMove, fetchLegalMoves } from "../../api/posts";
 import {
   bestMoveResponseToUICurrentGameState,
@@ -37,6 +37,8 @@ export const GameVisualsProvider: React.FC<{ children: React.ReactNode }> = ({
     playerColour,
     currentGameState,
     setCurrentGameState,
+    gameHistory,
+    setGameHistory,
     firstMove,
     setFirstMove,
   } = useGameSettings();
@@ -61,14 +63,16 @@ export const GameVisualsProvider: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
 
+    setGameHistory([]);
     const fenColour = fen.split(" ")[1] === "w" ? "White" : "Black";
     if (playerColour === fenColour) {
       fetchLegalMoves(fen).then((legalMovesResponse) => {
         const uiLegalMoves =
           legalMovesResponseToUILegalMoves(legalMovesResponse);
-        const uiCurrentGameState = {
+        const uiCurrentGameState: UICurrentGameState = {
           gameOver: uiLegalMoves.gameOver,
           uciMove: null,
+          sanMove: null,
           fen,
           legalMoves: uiLegalMoves.legalMoves,
         };
@@ -92,6 +96,9 @@ export const GameVisualsProvider: React.FC<{ children: React.ReactNode }> = ({
     setVisualPieceInHand(null);
     setVisualPromotionMove(null);
     setVisualGameOver(gameOver);
+    if (currentGameState.sanMove) {
+      setGameHistory([...gameHistory, currentGameState.sanMove])
+    }
   }, [currentGameState]);
 
   return (

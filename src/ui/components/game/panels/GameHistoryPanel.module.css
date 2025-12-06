@@ -1,0 +1,32 @@
+.historyPanel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding-top: 20px;
+  width: 100%;
+  height: 80%;
+  align-content: start;
+  overflow-y: auto;
+  box-sizing: border-box;
+  scrollbar-gutter: stable;
+}
+
+.historyCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.indexCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.copyFenBox {
+  padding-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

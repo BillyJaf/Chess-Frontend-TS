@@ -7,6 +7,8 @@ interface GameSettings {
   setPlayerColour: (player: string) => void;
   currentGameState: UICurrentGameState;
   setCurrentGameState: (currentGameState: UICurrentGameState) => void;
+  gameHistory: string[];
+  setGameHistory: (gameHistory: string[]) => void;
   // Indicates if this is the first move of the game:
   firstMove: boolean;
   setFirstMove: (firstMove: boolean) => void;
@@ -20,6 +22,7 @@ export const GameSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [playerColour, setPlayerColour] = useState<string>("White");
   const [currentGameState, setCurrentGameState] =
     useState<UICurrentGameState>(startingGameState);
+  const [gameHistory, setGameHistory] = useState<string[]>([]);
   const [firstMove, setFirstMove] = useState<boolean>(true);
 
   return (
@@ -29,6 +32,8 @@ export const GameSettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         setPlayerColour,
         currentGameState,
         setCurrentGameState,
+        gameHistory,
+        setGameHistory,
         firstMove,
         setFirstMove,
       }}

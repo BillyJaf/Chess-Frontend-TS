@@ -47,7 +47,7 @@ const buttonStyle = {
 };
 
 const PromoteModal: React.FC = () => {
-  const { playerColour, currentGameState, setCurrentGameState } =
+  const { playerColour, currentGameState, setCurrentGameState, gameHistory, setGameHistory } =
     useGameSettings();
   const {
     visualPromotionMove,
@@ -69,7 +69,8 @@ const PromoteModal: React.FC = () => {
     setVisualPromotionMove(null);
     let updatedFEN = "";
     let gameWinner = null;
-    for (const { endSquare, resultingFEN, gameOver } of visualLegalMoves[
+    let moveMade = null;
+    for (const { endSquare, resultingFEN, gameOver, sanMove } of visualLegalMoves[
       startSquareClicked
     ]) {
       if (
@@ -78,10 +79,12 @@ const PromoteModal: React.FC = () => {
       ) {
         updatedFEN = resultingFEN;
         gameWinner = gameOver;
+        moveMade = sanMove;
         break;
       }
     }
     setVisualFEN(fenStringToVisualFen(updatedFEN, playerColour));
+    setGameHistory([...gameHistory, moveMade!])
 
     if (gameWinner) {
       setVisualLegalMoves({});

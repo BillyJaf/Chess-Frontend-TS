@@ -35,6 +35,7 @@ export function bestMoveResponseToUICurrentGameState(
   const uiCurrentGameState: UICurrentGameState = {
     gameOver: bestMoveResponse.game_over,
     uciMove: bestMoveResponse.uci_move,
+    sanMove: bestMoveResponse.san_move,
     fen: bestMoveResponse.resulting_fen,
     legalMoves: uiGameStates,
   };
@@ -47,7 +48,7 @@ export function resultingGameStatesToUIGameStates(
 ) {
   const uiGameStates: LegalMoves = {};
 
-  for (const { uci_move, resulting_fen, game_over } of resultingGameStates) {
+  for (const { uci_move, san_move, resulting_fen, game_over } of resultingGameStates) {
     const startSquare = uci_move.slice(0, 2);
     const endSquare = uci_move.slice(2);
 
@@ -55,6 +56,7 @@ export function resultingGameStatesToUIGameStates(
       endSquare,
       resultingFEN: resulting_fen,
       gameOver: game_over,
+      sanMove: san_move,
     };
 
     if (startSquare in uiGameStates) {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { useGameSettings } from "../../../context/GameSettingsContext";
-import styles from "./SidePanel.module.css";
+import styles from "./CapturedPiecePanel.module.css";
 
 interface Header {
   header: string;
@@ -9,7 +9,7 @@ interface Header {
 
 const mainBoxStyle = {
   width: 240,
-  height: 480,
+  height: 120,
   bgcolor: "white",
   border: "2px solid black",
   boxShadow: 24,
@@ -26,11 +26,10 @@ const headerBoxStyle = {
   fontSize: 20,
   fontWeight: 600,
   pb: 1,
-  borderBottom: "1px solid grey",
   px: 8,
 };
 
-const SidePanel: React.FC<Header> = ({ header }: Header) => {
+const CapturedPiecePanel: React.FC<Header> = ({ header }: Header) => {
   const { playerColour, currentGameState } = useGameSettings();
 
   const currentFenBoard = currentGameState.fen.split(" ")[0];
@@ -127,4 +126,4 @@ const SidePanel: React.FC<Header> = ({ header }: Header) => {
   );
 };
 
-export default SidePanel;
+export default CapturedPiecePanel;

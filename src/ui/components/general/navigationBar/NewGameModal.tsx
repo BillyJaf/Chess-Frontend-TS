@@ -81,7 +81,7 @@ const NewGameModal: React.FC<ModalOpen> = ({
           setFenError(false);
         }, 3000);
       }
-    })
+    });
   };
 
   const playerColourSelector = (
@@ -104,14 +104,20 @@ const NewGameModal: React.FC<ModalOpen> = ({
       id="outlined-FenSelector"
       label={fenError ? "" : "Starting FEN String"}
       defaultValue=""
-      helperText={fenError ? "Invalid FEN String" : "Leave empty for default game."}
+      helperText={
+        fenError ? "Invalid FEN String" : "Leave empty for default game."
+      }
       onChange={(event) => setCustomFEN(event.target.value)}
       disabled={validatingFEN}
     />
   );
 
   const startGame = (
-    <Button variant="contained" onClick={handleStartGame} disabled={validatingFEN}>
+    <Button
+      variant="contained"
+      onClick={handleStartGame}
+      disabled={validatingFEN}
+    >
       Start Game
     </Button>
   );

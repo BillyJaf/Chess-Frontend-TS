@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import { useGameSettings } from "../../../context/GameSettingsContext";
-import styles from "./GameHistoryPanel.module.css"
+import styles from "./GameHistoryPanel.module.css";
 
 const mainBoxStyle = {
   width: 240,
@@ -35,22 +35,22 @@ const buttonStyle = {
 const GameHistoryPanel: React.FC = () => {
   const { gameHistory, currentGameState } = useGameSettings();
 
-  let indexedHistory = []
+  let indexedHistory = [];
   let index = 1;
 
   if (gameHistory.length % 2 === 0) {
     for (let i = 0; i < gameHistory.length; i += 2) {
       indexedHistory.push(index.toString() + ":");
       indexedHistory.push(gameHistory[i]);
-      indexedHistory.push(gameHistory[i+1]);
-      index += 1
+      indexedHistory.push(gameHistory[i + 1]);
+      index += 1;
     }
   } else {
     for (let i = 0; i < gameHistory.length - 2; i += 2) {
       indexedHistory.push(index.toString() + ":");
       indexedHistory.push(gameHistory[i]);
-      indexedHistory.push(gameHistory[i+1]);
-      index += 1
+      indexedHistory.push(gameHistory[i + 1]);
+      index += 1;
     }
     indexedHistory.push(index.toString() + ":");
     indexedHistory.push(gameHistory[gameHistory.length - 1]);
@@ -62,8 +62,8 @@ const GameHistoryPanel: React.FC = () => {
     } catch (_) {
       return;
     }
-  }
-  
+  };
+
   const copyFEN = (
     <Button variant="contained" sx={buttonStyle} onClick={handleClick}>
       Copy Current GameState
@@ -80,13 +80,14 @@ const GameHistoryPanel: React.FC = () => {
       <div className={styles.historyPanel}>
         {indexedHistory.map((indexOrMove, i) => {
           const indexCell = i % 3 === 0;
-          return indexCell ? <div className={styles.indexCell}>{indexOrMove}</div> : 
-                            <div className={styles.historyCell}>{indexOrMove}</div>
+          return indexCell ? (
+            <div className={styles.indexCell}>{indexOrMove}</div>
+          ) : (
+            <div className={styles.historyCell}>{indexOrMove}</div>
+          );
         })}
       </div>
-      <div className={styles.copyFenBox}>
-        {copyFEN}
-      </div>
+      <div className={styles.copyFenBox}>{copyFEN}</div>
     </Box>
   );
 };

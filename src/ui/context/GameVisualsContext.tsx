@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { fenStringToVisualFen } from "../utils/helpers";
-import { type LegalMoves, type UICurrentGameState, type UIPieceInHand } from "../types/types";
+import {
+  type LegalMoves,
+  type UICurrentGameState,
+  type UIPieceInHand,
+} from "../types/types";
 import { fetchBestMove, fetchLegalMoves } from "../../api/posts";
 import {
   bestMoveResponseToUICurrentGameState,
@@ -97,7 +101,7 @@ export const GameVisualsProvider: React.FC<{ children: React.ReactNode }> = ({
     setVisualPromotionMove(null);
     setVisualGameOver(gameOver);
     if (currentGameState.sanMove) {
-      setGameHistory([...gameHistory, currentGameState.sanMove])
+      setGameHistory([...gameHistory, currentGameState.sanMove]);
     }
   }, [currentGameState]);
 

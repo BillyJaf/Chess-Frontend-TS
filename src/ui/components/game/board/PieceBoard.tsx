@@ -18,7 +18,8 @@ const PieceBoard: React.FC = () => {
     setVisualPromotionMove,
     setVisualGameOver,
   } = useGameVisuals();
-  const { playerColour, setCurrentGameState, gameHistory, setGameHistory } = useGameSettings();
+  const { playerColour, setCurrentGameState, gameHistory, setGameHistory } =
+    useGameSettings();
 
   const handlePickupPiece = (
     e: React.MouseEvent,
@@ -95,7 +96,7 @@ const PieceBoard: React.FC = () => {
       return;
     } else {
       setVisualFEN(fenStringToVisualFen(resultingFEN, playerColour));
-      setGameHistory([...gameHistory, sanMove!])
+      setGameHistory([...gameHistory, sanMove!]);
       setVisualLegalMoves({});
       if (gameOver) {
         setVisualGameOver(gameOver);

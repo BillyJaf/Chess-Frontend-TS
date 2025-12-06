@@ -1,4 +1,8 @@
-import type { best_move_response, legal_moves_response, validate_fen_response } from "./types";
+import type {
+  best_move_response,
+  legal_moves_response,
+  validate_fen_response,
+} from "./types";
 
 export async function fetchBestMove(fen: string) {
   // const response = await fetch(

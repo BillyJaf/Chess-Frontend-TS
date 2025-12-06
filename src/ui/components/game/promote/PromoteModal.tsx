@@ -1,13 +1,6 @@
-import {
-  Box,
-  IconButton,
-  Modal,
-  Typography,
-} from "@mui/material";
+import { Box, IconButton, Modal, Typography } from "@mui/material";
 import { useGameSettings } from "../../../context/GameSettingsContext";
-import {
-  fenStringToVisualFen,
-} from "../../../utils/helpers";
+import { fenStringToVisualFen } from "../../../utils/helpers";
 import { useGameVisuals } from "../../../context/GameVisualsContext";
 import styles from "./PromoteModal.module.css";
 import { makeBotMove } from "../../../utils/makeBotMove";
@@ -47,8 +40,13 @@ const buttonStyle = {
 };
 
 const PromoteModal: React.FC = () => {
-  const { playerColour, currentGameState, setCurrentGameState, gameHistory, setGameHistory } =
-    useGameSettings();
+  const {
+    playerColour,
+    currentGameState,
+    setCurrentGameState,
+    gameHistory,
+    setGameHistory,
+  } = useGameSettings();
   const {
     visualPromotionMove,
     visualLegalMoves,
@@ -70,9 +68,12 @@ const PromoteModal: React.FC = () => {
     let updatedFEN = "";
     let gameWinner = null;
     let moveMade = null;
-    for (const { endSquare, resultingFEN, gameOver, sanMove } of visualLegalMoves[
-      startSquareClicked
-    ]) {
+    for (const {
+      endSquare,
+      resultingFEN,
+      gameOver,
+      sanMove,
+    } of visualLegalMoves[startSquareClicked]) {
       if (
         endSquare[2] == piece.toLowerCase() &&
         endSquare.slice(0, 2) == endSquareClicked
@@ -84,7 +85,7 @@ const PromoteModal: React.FC = () => {
       }
     }
     setVisualFEN(fenStringToVisualFen(updatedFEN, playerColour));
-    setGameHistory([...gameHistory, moveMade!])
+    setGameHistory([...gameHistory, moveMade!]);
 
     if (gameWinner) {
       setVisualLegalMoves({});

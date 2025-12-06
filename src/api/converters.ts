@@ -50,7 +50,12 @@ export function resultingGameStatesToUIGameStates(
 ) {
   const uiGameStates: LegalMoves = {};
 
-  for (const { uci_move, san_move, resulting_fen, game_over } of resultingGameStates) {
+  for (const {
+    uci_move,
+    san_move,
+    resulting_fen,
+    game_over,
+  } of resultingGameStates) {
     const startSquare = uci_move.slice(0, 2);
     const endSquare = uci_move.slice(2);
 
@@ -71,11 +76,12 @@ export function resultingGameStatesToUIGameStates(
   return uiGameStates;
 }
 
-export function validateFenResponseToUIValidFen(validate_fen_response: validate_fen_response) {
+export function validateFenResponseToUIValidFen(
+  validate_fen_response: validate_fen_response,
+) {
   const uiValidFen: UIValidFen = {
     valid: validate_fen_response.valid,
-    error: validate_fen_response.error
-  }
-  return uiValidFen
+    error: validate_fen_response.error,
+  };
+  return uiValidFen;
 }
-

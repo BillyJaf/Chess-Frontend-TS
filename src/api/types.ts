@@ -27,6 +27,6 @@ export interface ResultingGameState {
   game_over: string | null;
 }
 
-export interface OKResponse {
-  Ok: any;
+export interface FenOutput {
+  fen: string;
 }

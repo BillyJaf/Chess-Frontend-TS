@@ -1,4 +1,4 @@
-import type { health_check_response, OKResponse } from "./types";
+import type { health_check_response } from "./types";
 
 export async function healthCheck() {
   const response = await fetch(
@@ -13,8 +13,7 @@ export async function healthCheck() {
 //   });
 
   const data = await response.text();
-  const ok_response = JSON.parse(data) as OKResponse;
-  const health_check = ok_response.Ok as health_check_response;
+  const health_check = JSON.parse(data) as health_check_response;
 
   return health_check;
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useGameSettings } from "../../../context/GameSettingsContext";
 import styles from "./GameHistoryPanel.module.css";
 
@@ -81,9 +81,9 @@ const GameHistoryPanel: React.FC = () => {
         {indexedHistory.map((indexOrMove, i) => {
           const indexCell = i % 3 === 0;
           return indexCell ? (
-            <div className={styles.indexCell}>{indexOrMove}</div>
+            <div className={styles.indexCell} key={`IndexOrMove-${i}`}>{indexOrMove}</div>
           ) : (
-            <div className={styles.historyCell}>{indexOrMove}</div>
+            <div className={styles.historyCell} key={`IndexOrMove-${i}`}>{indexOrMove}</div>
           );
         })}
       </div>

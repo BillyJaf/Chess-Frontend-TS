@@ -8,6 +8,5 @@ export async function makeBotMove(
 ) {
   const apiBestMove = await fetchBestMove(fen);
   const uiCurrentGameState = bestMoveResponseToUICurrentGameState(apiBestMove);
-  console.log(uiCurrentGameState.sanMove);
   setCurrentGameState(uiCurrentGameState);
 }

@@ -26,3 +26,7 @@ export interface ResultingGameState {
   resulting_fen: string;
   game_over: string | null;
 }
+
+export interface OKResponse {
+  Ok: any;
+}

@@ -1,54 +1,38 @@
-# React + TypeScript + Vite
+# Typescript Chess Bot Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Authors
+- Billy Jaffray
 
-Currently, two official plugins are available:
+## Overview
+A frontend client for a chess client-server application.   
+Checkout the project deployed using AWS amplify [here](https://staging.d12fedjdowqalp.amplifyapp.com/).
+Checkout the backend [here](https://github.com/BillyJaf/Chess-AWS-Lambda).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Background and Motivation
+I enjoy both playing chess and programming - creating a chess bot is a natural extension.
+The goal of the project is to build a dynamic and interactive frontend using React to complement the chess-backend I have already created; the chess bot would be useless without the ability to play against it!
 
-## Expanding the ESLint configuration
+## Goals and Non-Goals
+### Goals
+- Create an interactive and visually appealing frontend that uses my chess bot backend.
+- Learn frontend design fundamentals / industry standards.
+- Strengthen my skills with the React framework.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Non-Goals
+- Programming any chess logic (this should all be handled by the backend).
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
+## The Project
+### Default Position
+<img width="1280" height="677" alt="image" src="https://github.com/user-attachments/assets/5948865a-f146-45df-a919-0523921d747d" />
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Example Position
+<img width="1279" height="679" alt="image" src="https://github.com/user-attachments/assets/ab4ea565-7bb1-4745-8eef-3f4afc493dbe" />
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+### New Game Modal
+<img width="1280" height="677" alt="image" src="https://github.com/user-attachments/assets/07443b19-90c6-441b-bf85-a0cc942ac09c" />
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    "react-x": reactX,
-    "react-dom": reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs["recommended-typescript"].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
-```
+### Pawn Promotion Modal
+<img width="1280" height="679" alt="image" src="https://github.com/user-attachments/assets/beec8313-e128-4f6f-99e8-ab935889eee9" />
+
+### Game Over Modal
+<img width="1280" height="677" alt="image" src="https://github.com/user-attachments/assets/e4484358-b021-40dc-9ef5-066f3301195a" />

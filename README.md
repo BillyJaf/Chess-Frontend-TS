@@ -5,7 +5,7 @@
 
 ## Overview
 A frontend client for a chess client-server application.   
-Checkout the project deployed using AWS amplify [here](https://staging.d12fedjdowqalp.amplifyapp.com/).
+The project was formerly deployed with AWS amplify.
 Checkout the backend [here](https://github.com/BillyJaf/Chess-AWS-Lambda).
 
 ## Background and Motivation
